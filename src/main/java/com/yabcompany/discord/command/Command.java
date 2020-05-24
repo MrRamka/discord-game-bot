@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Getter
-@NoArgsConstructor
 public abstract class Command {
 
     /**

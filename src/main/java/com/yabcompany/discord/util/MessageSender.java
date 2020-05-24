@@ -17,12 +17,15 @@ import java.util.Random;
 public class MessageSender {
 
     private List<Color> colorList = new ArrayList<>();
+    public final static Color BLUE_COLOR = new Color(108, 92, 231);
+    public final static Color RED_COLOR = new Color(214, 48, 49);
+    public final static Color GREEN_COLOR = new Color(85, 239, 196);
 
     @PostConstruct
     private void init() {
-        colorList.add(new Color(108, 92, 231));
-        colorList.add(new Color(214, 48, 49));
-        colorList.add(new Color(85, 239, 196));
+        colorList.add(BLUE_COLOR);
+        colorList.add(RED_COLOR);
+        colorList.add(GREEN_COLOR);
     }
 
     private static final String BOLD = "**";

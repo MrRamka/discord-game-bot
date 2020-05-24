@@ -16,12 +16,19 @@ public class AllCommands {
     @Autowired
     private HelpCommand helpCommand;
 
+    @Autowired
+    private RegistrationCommand registrationCommand;
+
+    @Autowired
+    private RussianRouletteCommand russianRouletteCommand;
+
     private List<Command> commands = new ArrayList<>();
 
     @PostConstruct
     private void init() {
         commands.add(helpCommand);
-
+        commands.add(registrationCommand);
+        commands.add(russianRouletteCommand);
     }
 
 }

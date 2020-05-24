@@ -2,14 +2,14 @@ package com.yabcompany.discord.util;
 
 import com.yabcompany.discord.command.AllCommands;
 import com.yabcompany.discord.command.Command;
+import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Set;
 
 @Component
+@Slf4j
 public class MainCommandParser {
 
     public final static String COMMAND_PREFIX = "_";

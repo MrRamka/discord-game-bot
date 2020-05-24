@@ -34,8 +34,6 @@ public class HelpCommand extends Command {
 
         StringBuilder replyMessage = new StringBuilder();
 
-//        replyMessage.append("You typed Help!\nFor commands use" + MainCommandParser.COMMAND_PREFIX);
-
         for (Command command : allCommands) {
             replyMessage.append("\t")
                     .append(command.getName())
