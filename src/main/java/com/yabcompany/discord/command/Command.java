@@ -1,5 +1,6 @@
 package com.yabcompany.discord.command;
 
+import com.yabcompany.discord.model.ClientMessage;
 import com.yabcompany.discord.util.MessageSender;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +39,7 @@ public abstract class Command {
     /**
      * Execute command
      */
-    public abstract void execute(Message message);
+    public abstract void execute(ClientMessage message);
 
 
 }

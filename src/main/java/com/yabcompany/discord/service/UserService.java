@@ -17,10 +17,10 @@ public class UserService {
 //        return userRepository..(id);
 //    }
 
-    public User saveUser(net.dv8tion.jda.api.entities.User user) {
+    public User saveUser(String user) {
         return userRepository.save(
                 com.yabcompany.discord.model.User.builder()
-                        .username(user.getName())
+                        .username(user)
                         .lastDailyMoneyReceive(LocalDateTime.now().minusDays(1))
                         .money(User.START_MONEY_AMOUNT)
                         .build()

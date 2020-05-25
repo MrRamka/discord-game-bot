@@ -1,9 +1,9 @@
 package com.yabcompany.discord.command;
 
+import com.yabcompany.discord.model.ClientMessage;
 import com.yabcompany.discord.model.ServerMessage;
 import com.yabcompany.discord.util.MainCommandParser;
 import lombok.extern.slf4j.Slf4j;
-import net.dv8tion.jda.api.entities.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.*;
@@ -16,7 +16,7 @@ public class HelpCommand extends Command {
     @Autowired
     private AllCommands commands;
 
-    /**
+     /**
      * Constructor for command
      * Dont forget call super(name, message)
      *
@@ -29,7 +29,7 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public void execute(Message message) {
+    public void execute(ClientMessage message) {
         List<Command> allCommands = commands.getCommands();
 
         StringBuilder replyMessage = new StringBuilder();
@@ -44,6 +44,7 @@ public class HelpCommand extends Command {
         }
         replyMessage.append("\n\nCommand prefix if: " + MainCommandParser.COMMAND_PREFIX);
         ServerMessage serverMessage = ServerMessage.builder()
+                .disMessage(message.getDisMessage())
                 .author("Available commands:")
                 .color(new Color(108, 92, 231))
                 .description(replyMessage.toString())

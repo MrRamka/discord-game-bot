@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<div class="col-8 offset-2 shadow mh-100 my-3 p-3">
+    <label for="chat-username-input">Enter username</label>
+    <input id="chat-username-input" type="text"
+           class="form-control feed_comment_block"
+           placeholder="Write username"/>
+    <input id="chat-username-submit" class="btn btn-outline-dark mt-2" type="button" value="Connect"/>
+
+</div>
+
+<div class="col-8 offset-2 shadow mh-100">
+
+    <div style="height: 35em; overflow: auto;" id="msg-place">
+    </div>
+    <div class="mt-auto pb-2">
+
+        <hr/>
+        <div class="row">
+            <div class="col-10">
+                <input id="chat-message-input" type="text"
+                       class="form-control feed_comment_block"
+                       placeholder="Write message"/>
+            </div>
+            <div class="col">
+                <input id="chat-message-submit" class="btn btn-outline-dark" type="button" value="Send"/>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    let socket = new WebSocket(
+        'ws://localhost:8080/chat'
+    );
+    let submitButton = $('#chat-message-submit');
+    let messageInput = $('#chat-message-input');
+    let messagePlace = $('#msg-place');
+    let username = $('#chat-username-input');
+
+    messageInput.attr('readonly', '');
+    submitButton.attr('disabled', '');
+    socket.onopen = function () {
+        let message_text = $('<p>', {class: "m-2 border p-2 rounded border-success", text: "Ready"});
+        messagePlace.append(message_text);
+        // messagePlace.append("");
+    };
+
+    socket.onclose = function (event) {
+        let message_text = $('<p>', {class: "m-2 border p-2 rounded border-warning", text: "Disconnected from server"});
+        messagePlace.append(message_text);
+    };
+
+    socket.onmessage = function (event) {
+        let message_text = $('<p>', {class: "m-2 border p-2 rounded border-primary", text: event.data});
+        messagePlace.append(message_text);
+    };
+
+    socket.onerror = function (error) {
+        let message_text = $('<p>', {class: "m-2 border p-2 rounded border-danger", text: "Error"});
+        messagePlace.append(message_text);
+    };
+
+    submitButton.click(function (e) {
+        if (messageInput.val().length > 0) {
+            let message_text = $('<p>', {
+                class: "m-2 border p-2 rounded border-warning",
+                text: username.val() + ": " + messageInput.val()
+            });
+            messagePlace.append(message_text);
+            socket.send(username.val() + '#' + messageInput.val());
+            messageInput.val('')
+        } else {
+            let message_text = $('<p>', {
+                class: "m-2 border p-2 rounded border-danger",
+                text: "Cant send empty message"
+            });
+            messagePlace.append(message_text);
+        }
+    });
+
+    // $('#chat-message-input').focus();
+
+    $('#chat-username-submit').click(function () {
+        if (username.val().length > 0) {
+            $(this).attr('disabled', '');
+            username.attr('readonly', '');
+
+            submitButton.removeAttr('disabled');
+            messageInput.removeAttr('readonly')
+        }
+
+    });
+
+</script>
+</body>
+</html>

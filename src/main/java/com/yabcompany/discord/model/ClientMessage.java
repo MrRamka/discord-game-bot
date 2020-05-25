@@ -3,27 +3,21 @@ package com.yabcompany.discord.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import net.dv8tion.jda.api.entities.Message;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.awt.*;
+import javax.websocket.Session;
 
 @Data
+@Getter
 @AllArgsConstructor
 @Builder
-public class ServerMessage {
+public class ClientMessage {
 
-    private ClientMessage message;
+    private String username;
 
-    private String author;
-
-    private String title;
-
-    private String description;
-
-    private Color color;
-
-    private String footer;
+    private String message;
 
     private Message disMessage;
 

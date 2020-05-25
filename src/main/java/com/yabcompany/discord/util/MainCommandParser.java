@@ -2,6 +2,7 @@ package com.yabcompany.discord.util;
 
 import com.yabcompany.discord.command.AllCommands;
 import com.yabcompany.discord.command.Command;
+import com.yabcompany.discord.model.ClientMessage;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,12 @@ public class MainCommandParser {
     private AllCommands commands;
 
 
-    public void parse(Message m) {
-        Message message = m;
-        String rawMessage = message.getContentRaw();
+    public void parse(ClientMessage message) {
+        String rawMessage = message.getMessage();
         /*
          * prefix + command
          */
-        if (rawMessage.length() >= COMMAND_PREFIX.length() + 1 && !message.getAuthor().isBot()) {
+        if (rawMessage.length() >= COMMAND_PREFIX.length() + 1) {
 
             if (rawMessage.startsWith(COMMAND_PREFIX)) {
                 String msg = rawMessage.substring(COMMAND_PREFIX.length());

@@ -1,5 +1,6 @@
 package com.yabcompany.discord.command;
 
+import com.yabcompany.discord.model.ClientMessage;
 import com.yabcompany.discord.model.RussianRouletteGame;
 import com.yabcompany.discord.model.ServerMessage;
 import com.yabcompany.discord.service.RussianRouletteService;
@@ -47,10 +48,10 @@ public class RussianRouletteCommand extends Command {
     }
 
     @Override
-    public void execute(Message message) {
-        User user = message.getAuthor();
-        Optional<com.yabcompany.discord.model.User> dbUser = userRepository.findUserByUsername(user.getName());
-        String rawMessage = message.getContentRaw();
+    public void execute(ClientMessage message) {
+        String user = message.getUsername();
+        Optional<com.yabcompany.discord.model.User> dbUser = userRepository.findUserByUsername(user);
+        String rawMessage = message.getMessage();
         String[] split = rawMessage.split(COMMAND_SEPARATOR);
         try {
             int bet = Integer.parseInt(split[1]);
@@ -67,6 +68,7 @@ public class RussianRouletteCommand extends Command {
             log.error("Command argument error");
 
             ServerMessage serverMessage = ServerMessage.builder()
+                    .disMessage(message.getDisMessage())
                     .author("Cant understand command:")
                     .color(RED_COLOR)
                     .description(rawMessage)
@@ -82,11 +84,12 @@ public class RussianRouletteCommand extends Command {
     }
 
 
-    private void startGame(com.yabcompany.discord.model.User user, int pot, Message message) {
+    private void startGame(com.yabcompany.discord.model.User user, int pot, ClientMessage message) {
         RussianRouletteGame game = russianRouletteService.createGame(user, pot);
 
         long time = GAME_WAIT_TIME - LocalDateTime.now().minusSeconds(game.getDateCreated().getSecond()).getSecond();
         ServerMessage serverMessage = ServerMessage.builder()
+                .disMessage(message.getDisMessage())
                 .author("User " + user.getUsername() + " has created a game")
                 .color(BLUE_COLOR)
                 .description("Pot is " + pot + "\nUse _join #" + game.getHash() + " to join")
@@ -94,8 +97,6 @@ public class RussianRouletteCommand extends Command {
                         time + " seconds")
                 .message(message)
                 .build();
-
-
         messageSender.sendMessage(serverMessage);
     }
 }

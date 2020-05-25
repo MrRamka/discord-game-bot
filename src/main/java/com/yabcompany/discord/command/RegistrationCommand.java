@@ -1,5 +1,6 @@
 package com.yabcompany.discord.command;
 
+import com.yabcompany.discord.model.ClientMessage;
 import com.yabcompany.discord.repository.UserRepository;
 import com.yabcompany.discord.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +33,8 @@ public class RegistrationCommand extends Command {
     }
 
     @Override
-    public void execute(Message message) {
-        User user = message.getAuthor();
+    public void execute(ClientMessage message) {
+        String user = message.getUsername();
         userService.saveUser(user);
     }
 }

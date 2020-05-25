@@ -25,7 +25,6 @@ public class BotStarter {
     @PostConstruct
     public void init() {
         try {
-
             JDABuilder jda = JDABuilder.createDefault(SECRET_TOKEN);
             jda.setActivity(Activity.watching(WATCHING))
                     .addEventListeners(gamingBotListener)
@@ -35,8 +34,6 @@ public class BotStarter {
         } catch (LoginException e) {
             log.error("Login Exception" + e.getMessage());
         }
-
-
     }
 
 }

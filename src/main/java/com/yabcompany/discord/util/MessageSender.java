@@ -1,25 +1,33 @@
 package com.yabcompany.discord.util;
 
 import com.yabcompany.discord.model.ServerMessage;
+import com.yabcompany.discord.ws.WebSocketHandler;
+import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import javax.annotation.PostConstruct;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 
 @Component
+@Slf4j
 public class MessageSender {
 
     private List<Color> colorList = new ArrayList<>();
     public final static Color BLUE_COLOR = new Color(108, 92, 231);
     public final static Color RED_COLOR = new Color(214, 48, 49);
     public final static Color GREEN_COLOR = new Color(85, 239, 196);
+    private Set<WebSocketSession> webSocketSessionSet = WebSocketHandler.webSocketSessionSet;
 
     @PostConstruct
     private void init() {
@@ -31,12 +39,17 @@ public class MessageSender {
     private static final String BOLD = "**";
 
     public void sendMessage(ServerMessage message) {
-        sendDiscordMessage(message);
+        if (message.getDisMessage() != null){
 
+            sendDiscordMessage(message);
+        }
+        for (WebSocketSession ws : webSocketSessionSet) {
+            sendWsMessage(message, ws);
+        }
     }
 
     private void sendDiscordMessage(ServerMessage message) {
-        MessageChannel messageChannel = message.getMessage().getChannel();
+        MessageChannel messageChannel = message.getDisMessage().getChannel();
         MessageEmbed embedBuilder = new EmbedBuilder()
                 .setTitle(message.getTitle())
                 .setAuthor(message.getAuthor())
@@ -57,5 +70,21 @@ public class MessageSender {
     public Color getRandomColor() {
         Random random = new Random();
         return colorList.get(random.nextInt(colorList.size()));
+    }
+
+    private void sendWsMessage(ServerMessage message, WebSocketSession webSocketSession) {
+
+        String stringBuilder = message.getAuthor() +
+                message.getTitle() +
+                message.getDescription() +
+                message.getFooter();
+        TextMessage t = new TextMessage(stringBuilder);
+
+        try {
+            webSocketSession.sendMessage(t);
+        } catch (IOException e) {
+            log.error("Exception: " + e.getMessage());
+        }
+
     }
 }
