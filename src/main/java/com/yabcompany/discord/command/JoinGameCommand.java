@@ -35,8 +35,8 @@ public class JoinGameCommand extends Command {
      * Constructor for command
      * Dont forget call super(name, message)
      *
-     * @param name
-     * @param description
+     * @param name name
+     * @param description description
      */
     public JoinGameCommand(String name, String description) {
         super(name, description);

@@ -23,8 +23,17 @@ public class CommandCreator {
     }
 
     @Bean("Join")
-    public JoinGameCommand joinGameCommand(){
+    public JoinGameCommand joinGameCommand() {
         return new JoinGameCommand("join", "<#hash> Join to game using game hash");
     }
 
+    @Bean("Money")
+    public MoneyCommand moneyCommand() {
+        return new MoneyCommand("money", "Shows your money");
+    }
+
+    @Bean("Daily")
+    public DailyCommand dailyCommand() {
+        return new DailyCommand("daily", "You can get 2500");
+    }
 }

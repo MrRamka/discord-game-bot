@@ -117,6 +117,7 @@ public class RussianRouletteCommand extends Command {
         RussianRouletteGame game = op.get();
         Random random = new Random();
         List<User> users = new ArrayList<>(game.getPlayers());
+        int pot = game.getPot() / users.size();
         if (users.size() == 1) {
             String title = "No players((";
             String description = "Take back you money";
@@ -152,6 +153,7 @@ public class RussianRouletteCommand extends Command {
                 messageSender.sendMessage(serverMessage);
             }
             users.remove(u);
+            userService.subMoney(u, pot);
             try {
                 Thread.sleep(1000 * ROUND_WAIT_TIME);
             } catch (InterruptedException e) {

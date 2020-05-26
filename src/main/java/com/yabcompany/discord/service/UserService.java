@@ -21,7 +21,7 @@ public class UserService {
         return userRepository.save(
                 com.yabcompany.discord.model.User.builder()
                         .username(user)
-                        .lastDailyMoneyReceive(LocalDateTime.now().minusDays(1))
+                        .lastDailyMoneyReceive(LocalDateTime.now().minusDays(2))
                         .money(User.START_MONEY_AMOUNT)
                         .build()
         );
@@ -32,5 +32,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User addDailyMoney(User user, int money) {
+        user.setMoney(user.getMoney() + money);
+        user.setLastDailyMoneyReceive(LocalDateTime.now());
+        return userRepository.save(user);
+    }
 
+    public User subMoney(User user, int money) {
+        user.setMoney(user.getMoney() - money);
+        return userRepository.save(user);
+
+    }
 }

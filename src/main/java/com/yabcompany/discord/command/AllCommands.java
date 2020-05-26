@@ -25,6 +25,11 @@ public class AllCommands {
     @Autowired
     private JoinGameCommand joinGameCommand;
 
+    @Autowired
+    private MoneyCommand moneyCommand;
+
+    @Autowired
+    private DailyCommand dailyCommand;
 
     private List<Command> commands = new ArrayList<>();
 
@@ -34,6 +39,8 @@ public class AllCommands {
         commands.add(registrationCommand);
         commands.add(russianRouletteCommand);
         commands.add(joinGameCommand);
+        commands.add(moneyCommand);
+        commands.add(dailyCommand);
     }
 
 }
