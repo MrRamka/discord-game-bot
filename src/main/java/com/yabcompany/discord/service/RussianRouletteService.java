@@ -37,8 +37,12 @@ public class RussianRouletteService {
 
 
     public RussianRouletteGame addUser(User user, RussianRouletteGame game) {
-        if (user.getMoney() >= game.getPot()) {
+
+        int pot = game.getPot() / game.getPlayers().size();
+
+        if (user.getMoney() >= pot) {
             game.getPlayers().add(user);
+            game.setPot(game.getPot() + pot);
             user.setMoney(user.getMoney() - game.getPot());
             russianRouletteRepository.save(game);
             userRepository.save(user);
@@ -46,16 +50,16 @@ public class RussianRouletteService {
         return game;
     }
 
+
     private String randomHash() {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
         int targetStringLength = 6;
         Random random = new Random();
 
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
+        return random.ints(leftLimit, rightLimit + 1)
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-        return generatedString;
     }
 }

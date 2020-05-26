@@ -27,5 +27,10 @@ public class UserService {
         );
     }
 
+    public User addMoney(User user, int money) {
+        user.setMoney(user.getMoney() + money);
+        return userRepository.save(user);
+    }
+
 
 }

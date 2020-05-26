@@ -22,4 +22,9 @@ public class CommandCreator {
         return new RussianRouletteCommand("russianroulette", "<bet> Starts Russian Roulette game");
     }
 
+    @Bean("Join")
+    public JoinGameCommand joinGameCommand(){
+        return new JoinGameCommand("join", "<#hash> Join to game using game hash");
+    }
+
 }

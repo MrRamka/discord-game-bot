@@ -1,5 +1,6 @@
 package com.yabcompany.discord.util;
 
+import com.yabcompany.discord.model.ClientMessage;
 import com.yabcompany.discord.model.ServerMessage;
 import com.yabcompany.discord.ws.WebSocketHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class MessageSender {
     private static final String BOLD = "**";
 
     public void sendMessage(ServerMessage message) {
-        if (message.getDisMessage() != null){
+        if (message.getDisMessage() != null) {
 
             sendDiscordMessage(message);
         }
@@ -54,9 +55,9 @@ public class MessageSender {
                 .setTitle(message.getTitle())
                 .setAuthor(message.getAuthor())
                 .setFooter(message.getFooter())
-                .setColor(colorList.get(0))
-                .addField("Commands",
-                        setBold(message.getDescription()), true
+                .setColor(message.getColor())
+                .addField("Description:",
+                        (message.getDescription()), true
                 ).build();
         messageChannel.sendMessage(
                 embedBuilder
@@ -74,9 +75,8 @@ public class MessageSender {
 
     private void sendWsMessage(ServerMessage message, WebSocketSession webSocketSession) {
 
-        String stringBuilder = message.getAuthor() +
-                message.getTitle() +
-                message.getDescription() +
+        String stringBuilder = message.getAuthor() + "\n" +
+                message.getDescription() + "\n" +
                 message.getFooter();
         TextMessage t = new TextMessage(stringBuilder);
 
@@ -86,5 +86,23 @@ public class MessageSender {
             log.error("Exception: " + e.getMessage());
         }
 
+    }
+
+
+    public ServerMessage createMessage(
+            ClientMessage message,
+            String author,
+            String description,
+            String footer,
+            Color color
+    ) {
+        return ServerMessage.builder()
+                .disMessage(message.getDisMessage())
+                .author(author)
+                .color(color)
+                .description(description)
+                .footer(footer)
+                .message(message)
+                .build();
     }
 }

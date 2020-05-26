@@ -22,6 +22,10 @@ public class AllCommands {
     @Autowired
     private RussianRouletteCommand russianRouletteCommand;
 
+    @Autowired
+    private JoinGameCommand joinGameCommand;
+
+
     private List<Command> commands = new ArrayList<>();
 
     @PostConstruct
@@ -29,6 +33,7 @@ public class AllCommands {
         commands.add(helpCommand);
         commands.add(registrationCommand);
         commands.add(russianRouletteCommand);
+        commands.add(joinGameCommand);
     }
 
 }

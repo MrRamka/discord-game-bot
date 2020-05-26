@@ -35,10 +35,7 @@ public class RussianRouletteGame {
     @Column(nullable = false)
     private LocalDateTime dateCreated;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    private List<User> players;
-
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "russian_roulette_game_players",
             joinColumns = {@JoinColumn(name = "game_id")},
